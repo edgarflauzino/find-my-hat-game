@@ -63,7 +63,9 @@ class Field {
   }
   checkMove() {
     const loc = this._field[this._newState[0]][this._newState[1]]
-    if (this._newState[0] < 0 || this._newState[1] < 0 || this._newState[0] > this._field.length-1 || this._newState[1] > this._field[0].length-1) {
+    const yCheck = this._newState[0]
+    const xCheck = this._newState[1]
+    if (yCheck < 0 || xCheck < 0 || yCheck > this._field.length-1 || xCheck > this._field[0].length-1) {
         console.log('You fell off the map! You lose!')
         return false
     }
@@ -77,19 +79,18 @@ class Field {
         return true
     }
   }
-}
-
-let loop = true
-const myField = new Field
-
-myField.generateField(2,2)
-myField.print()
-
-while(loop) {
-    myField.updateState()
-    if (!myField.checkMove()) {
+  runGame() {
+    this.generateField()
+    while (true) {
+      this.print()
+      this.updateState()
+      if (!this.checkMove()) {
         break;
+      }
+      this.updateMap()
     }
-    myField.updateMap()
-    myField.print()
+  }
 }
+
+const myField = new Field
+myField.runGame()
